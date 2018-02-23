@@ -1,0 +1,22 @@
+{% extends '@App/master.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Sprint</th>
+                <th>Van</th>
+                <th>Tot</th>
+            </tr>
+            </thead>
+            {% for sprint in sprints %}
+                <tr>
+                    <td><a href="{{ path('app_sprint', { 'sprintId': sprint['id'] }) }}">{{ sprint['name'] }}</a></td>
+                    <td>{{ app_getDateDayByString(sprint['start'], false) }}</td>
+                    <td>{{ app_getDateDayByString(sprint['end'], false) }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

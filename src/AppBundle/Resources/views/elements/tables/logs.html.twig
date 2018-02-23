@@ -1,0 +1,64 @@
+{% set totalTimeSpent = 0 %}
+<table class="table table-sm table-striped mb-0">
+    <thead>
+    <tr>
+        {% if (showDate is defined and showDate) or showDate is not defined %}
+            <th style="width: 120px;">Datum</th>
+        {% endif %}
+        {% if (showKey is defined and showKey) or showKey is not defined %}
+            <th style="width: 140px;">Issue</th>
+        {% endif %}
+        <th style="width: 100px;">Tijd</th>
+        {% if (showUser is defined and showUser) or showUser is not defined %}
+            <th style="width: 200px;">Naam</th>
+        {% endif %}
+        <th>Opmerking</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for log in logs %}
+        <tr>
+            {% set totalTimeSpent = totalTimeSpent + log['timeSpentSeconds'] %}
+            {% if (showDate is defined and showDate) or showDate is not defined %}
+                <td>{{ log['date'] }}</td>
+            {% endif %}
+            {% if (showKey is defined and showKey) or showKey is not defined %}
+                <td>
+                    {% include '@App/elements/jiralink.html.twig' with {
+                        'issueKey': log['issue'],
+                        'sprint': sprint
+                    } %}
+                </td>
+            {% endif %}
+            <td>{{ log['timeSpent'] }}</td>
+            {% if (showUser is defined and showUser) or showUser is not defined %}
+                <td><a href="{{ path('app_employee', { 'employeeId': log['user']['id'], 'sprintId': sprint['id'] }) }}">{{ log['user']['name'] }}</a></td>
+            {% endif %}
+            <td>
+                {% if log['comment'] is empty %}
+                    <em class="text-danger" style="font-size: smaller;">Geen omschrijving ingevuld</em>
+                {% else %}
+                    {{ log['comment']|nl2br }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    {% if (showFooter is defined and showFooter) or showFooter is not defined %}
+        <tfoot>
+        <tr>
+            {% if (showDate is defined and showDate) or showDate is not defined %}
+                <th></th>
+            {% endif %}
+            {% if (showKey is defined and showKey) or showKey is not defined %}
+                <th></th>
+            {% endif %}
+            <th>{{ app_calculateHoursbySeconds(totalTimeSpent) }} uur</th>
+            {% if (showUser is defined and showUser) or showUser is not defined %}
+                <th></th>
+            {% endif %}
+            <th></th>
+        </tr>
+        </tfoot>
+    {% endif %}
+</table>

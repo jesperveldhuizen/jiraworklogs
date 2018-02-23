@@ -1,0 +1,25 @@
+{% set users = app_getTimeSpentPerUser(worklogs) %}
+<div class="container mb-3">
+    <table class="table table-sm table-striped mb-0">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Dag</th>
+            <th>Gelogde uren</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for day,logs in days %}
+            <tr>
+                {% set isDayInSprint = app_isDateInSprint(day, sprint, true) %}
+                <td>
+                    <a href="{{ path('app_day', { 'sprintId': sprint['id'], 'day': day }) }}">{{ app_getDateByTs(day, true, true) }}</a>
+                    {% if isDayInSprint == false %}
+                        <span title="Uren zijn gelogd in eerdere sprint." style="font-size: smaller;" class="oi oi-warning text-danger"></span>
+                    {% endif %}
+                </td>
+                <td>{{ app_calculateHoursbySeconds(app_getTimeSpentForLogs(logs)) }} uur</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

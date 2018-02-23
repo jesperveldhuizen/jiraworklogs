@@ -1,0 +1,8 @@
+table thead th {
+    cursor: pointer;
+}
+
+table thead th:hover {
+    background: #48A0B5;
+    color: #fff;
+}

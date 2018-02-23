@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Jira worklogs</title>
+    <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/open-iconic/font/css/open-iconic-bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    {% include '@App/elements/header.html.twig' %}
+</header>
+<main class="mb-5">
+    {% block body %}{% endblock %}
+</main>
+
+<script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
+<script src="{{ asset('vendor/tablesorter/dist/js/jquery.tablesorter.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
+
+</body>
+</html>

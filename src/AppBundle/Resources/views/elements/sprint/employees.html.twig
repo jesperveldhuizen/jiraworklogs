@@ -1,0 +1,27 @@
+{% set users = app_getTimeSpentPerUser(worklogs) %}
+<div class="container mb-3">
+    <table class="table table-sm table-striped mb-0">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Naam</th>
+            <th>Gelogde uren</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set totalSeconds = 0 %}
+        {% for row in users %}
+            <tr>
+                <td><a href="{{ path('app_employee', { 'employeeId': row['user']['id'], 'sprintId': sprint['id'] }) }}">{{ row['user']['name'] }}</a></td>
+                <td>{{ app_calculateHoursbySeconds(row['timeSpent']) }} uur</td>
+                {% set totalSeconds = totalSeconds + row['timeSpent'] %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Totaal</th>
+            <th>{{ app_calculateHoursbySeconds(totalSeconds) }} uur</th>
+        </tr>
+        </tfoot>
+    </table>
+</div>

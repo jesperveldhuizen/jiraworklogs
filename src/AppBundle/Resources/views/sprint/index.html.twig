@@ -1,0 +1,44 @@
+{% extends '@App/master.html.twig' %}
+
+{% block body %}
+
+    <div class="p-3 mb-3 bg-success text-white">
+        <div class="container">
+            <h4 class="mb-0">Werknemers en dagen</h4>
+        </div>
+    </div>
+    <div class="container mb-3">
+        <div class="row">
+            <div class="col p-0">
+                {% include '@App/elements/sprint/employees.html.twig' with {
+                    'worklogs': worklogs,
+                    'sprint': sprint
+                } %}
+            </div>
+            <div class="col p-0">
+                {% include '@App/elements/sprint/days.html.twig' with {
+                    'worklogs': worklogs,
+                    'days': days,
+                    'sprint': sprint
+                } %}
+            </div>
+        </div>
+    </div>
+
+    {% include '@App/elements/sprint/projects.html.twig' with {
+        'worklogs': worklogs,
+        'issues': issues,
+        'sprint': sprint
+    } %}
+
+    {% include '@App/elements/sprint/issues.html.twig' with {
+        'issues': issues,
+        'sprint': sprint,
+        'showExceeded': false
+    } %}
+
+    {% include '@App/elements/sprint/exceeded.html.twig' with {
+        'issues': exceeded
+    } %}
+
+{% endblock %}

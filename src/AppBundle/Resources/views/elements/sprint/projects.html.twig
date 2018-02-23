@@ -1,0 +1,63 @@
+{% set projects = app_getTimeSpentByProject(worklogs) %}
+<div class="p-3 mb-3 bg-success text-white">
+    <div class="container">
+        <h4 class="mb-0">Projecten</h4>
+    </div>
+</div>
+<div class="container mb-3">
+    <table class="table table-sm table-striped mb-0">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Project</th>
+            <th style="width: 90px;">Issues</th>
+            <th style="width: 70px;">SP</th>
+            <th style="width: 80px;">Waarde</th>
+            <th style="width: 120px;">Estimate</th>
+            <th>Logged</th>
+            <th class="sorter-estimate" style="width: 20px;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for projectKey,seconds in projects %}
+            <tr>
+                {% set projectIssues = app_getIssuesForProject(projectKey, issues) %}
+                {% set totals = app_getTotalsForIssues(projectIssues) %}
+                {% set estimate = app_calculateHoursbySeconds(totals['estimate']) %}
+                {% set timeSpent = app_calculateHoursbySeconds(totals['timespent']) %}
+                <td>
+                    <a href="{{ path('app_project', { 'projectKey': projectKey, 'sprintId': sprint['id'] }) }}">
+                        {{ projectKey }}
+                    </a>
+                </td>
+                <td>{{ projectIssues|length }}</td>
+                <td>{{ totals['sp'] }}</td>
+                <td>{{ totals['value'] }}</td>
+                <td>{{ estimate }} uur</td>
+                <td>{{ timeSpent }} uur</td>
+                {% include '@App/elements/thumbs.html.twig' with {
+                    'timespent': totals['timespent'],
+                    'estimate': totals['estimate']
+                } %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            {% set totals = app_getTotalsForIssues(issues) %}
+            {% set estimate = app_calculateHoursbySeconds(totals['estimate']) %}
+            {% set timeSpent = app_calculateHoursbySeconds(totals['timespent']) %}
+            <th>Totaal</th>
+            <th>{{ issues|length }}</th>
+            <th>{{ totals['sp'] }}</th>
+            <th>{{ totals['value'] }}</th>
+            <th>{{ estimate }} uur</th>
+            <th>{{ timeSpent }} uur</th>
+            {% include '@App/elements/thumbs.html.twig' with {
+                'timespent': totals['timespent'],
+                'estimate': totals['estimate'],
+                'cell': 'th'
+            } %}
+        </tr>
+        </tfoot>
+    </table>
+</div>

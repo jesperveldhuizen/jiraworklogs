@@ -1,0 +1,30 @@
+{% set projects = app_getProjects(issues) %}
+<div class="p-3 mb-3 bg-success text-white">
+    <div class="container">
+        <h4 class="mb-0">Issues (<a class="text-white" href="{{ path('app_issues', { 'sprintId': sprint['id'] }) }}">overzicht</a>)</h4>
+    </div>
+</div>
+<div class="container mb-3">
+    <div id="accordion">
+        {% for projectKey,issues in projects %}
+        <div class="card">
+            <div class="card-header p-1" id="heading{{ projectKey }}">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ projectKey }}">
+                        {{ projectKey }} (issues: {{ issues|length }})
+                    </button>
+                </h5>
+            </div>
+            <div id="collapse{{ projectKey }}" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    {% include '@App/elements/tables/issues.html.twig' with {
+                        'issues': issues,
+                        'sprint': sprint,
+                        'showExceeded': false
+                    } %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

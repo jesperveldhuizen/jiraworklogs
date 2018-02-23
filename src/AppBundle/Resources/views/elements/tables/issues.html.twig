@@ -1,0 +1,88 @@
+{% set showStatus = (showStatus is defined and showStatus) or (showStatus is not defined) %}
+{% set showThumbs = (showThumbs is defined and showThumbs) or (showThumbs is not defined) %}
+{% set showExceeded = (showExceeded is defined and showExceeded) or (showExceeded is not defined) %}
+
+{% set totals = app_getTotalsForIssues(issues) %}
+<table class="table table-sm table-striped mb-0">
+    <thead>
+    <tr>
+        <th style="width: 140px;">Key</th>
+        <th>Issue</th>
+        {% if showStatus %}
+            <th class="sorter-status" style="width: 120px;">Status</th>
+        {% endif %}
+        <th style="width: 70px;">SP</th>
+        <th style="width: 80px;">Waarde</th>
+        <th style="width: 120px;">Estimate</th>
+        <th style="width: 120px;">Logged</th>
+        {% if showExceeded %}
+            <th style="width: 120px;">Exceeded</th>
+        {% endif %}
+        {% if showThumbs %}
+            <th class="sorter-estimate" style="width: 20px;"></th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for issue in issues %}
+        <tr>
+            {% set estimate = app_calculateHoursbySeconds(issue['estimate']) %}
+            {% set timeSpent = app_calculateHoursbySeconds(issue['timespent']) %}
+            {% set exceeded = app_calculateHoursbySeconds(issue['exceeded']) %}
+            <td>
+                {% include '@App/elements/jiralink.html.twig' with {
+                    'issueKey': issue['key']
+                } %}
+            </td>
+            <td>{{ issue['summary'] }}</td>
+            {% if showStatus %}
+                <td>{{ issue['status']['name'] }}</td>
+            {% endif %}
+            <td>{{ issue['sp'] }}</td>
+            <td>
+                {{ issue['value'] }}
+                {% if issue['value'] != '0' %}
+                    <span style="font-size: smaller;" class="oi oi-warning text-danger"></span>
+                {% endif %}
+            </td>
+            <td>{{ estimate }} uur</td>
+            <td>{{ timeSpent }} uur</td>
+            {% if showExceeded %}
+                <td>{{ exceeded }} uur</td>
+            {% endif %}
+            {% if showThumbs %}
+                {% include '@App/elements/thumbs.html.twig' with {
+                    'timespent': issue['timespent'],
+                    'estimate': issue['estimate']
+                } %}
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        {% set estimate = app_calculateHoursbySeconds(totals['estimate']) %}
+        {% set timeSpent = app_calculateHoursbySeconds(totals['timespent']) %}
+        {% set exceeded = app_calculateHoursbySeconds(totals['exceeded']) %}
+        <th></th>
+        {% if showStatus %}
+            <th></th>
+        {% endif %}
+        <th>Totalen</th>
+        <th>{{ totals['sp'] }}</th>
+        <th>{{ totals['value'] }}</th>
+        <th>{{ estimate }} uur</th>
+        <th>{{ timeSpent }} uur</th>
+        {% if showExceeded %}
+            <th>{{ exceeded }} uur</th>
+        {% endif %}
+        {% if showThumbs %}
+            {% include '@App/elements/thumbs.html.twig' with {
+                'timespent': totals['timespent'],
+                'estimate': totals['estimate'],
+                'cell': 'th'
+            } %}
+        {% endif %}
+    </tr>
+    </tfoot>
+</table>

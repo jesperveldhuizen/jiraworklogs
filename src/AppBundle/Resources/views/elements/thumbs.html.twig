@@ -1,0 +1,23 @@
+{% set cell = cell is not defined ? 'td' : cell %}
+
+{% if timespent == 0 %}
+    {% set status = 0 %}
+{% else %}
+    {% if timespent <= estimate %}
+        {% set status = 2 %}
+    {% else %}
+        {% set status = 1 %}
+    {% endif %}
+{% endif %}
+
+<{{ cell }} data-sort-value="{{ status }}" class="text-center">
+    {% if timespent == 0 %}
+        <span class="oi oi-media-stop text-warning"></span>
+    {% else %}
+        {% if timespent <= estimate %}
+            <span class="oi oi-thumb-up text-success"></span>
+        {% else %}
+            <span class="oi oi-thumb-down text-danger"></span>
+        {% endif %}
+    {% endif %}
+</{{ cell }}>

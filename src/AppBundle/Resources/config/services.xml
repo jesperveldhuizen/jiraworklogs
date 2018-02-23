@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service class="AppBundle\Twig\AppExtension" id="app.twig.app_extension">
+            <argument id="app.jira.jira_data_manager" type="service"/>
+            <argument id="app.helper.employee_helper" type="service"/>
+            <argument id="app.helper.issue_helper" type="service"/>
+            <argument id="app.helper.project_helper" type="service"/>
+            <argument id="app.helper.worklog_helper" type="service"/>
+            <tag name="twig.extension"/>
+        </service>
+
+        <service class="AppBundle\Jira\JiraSprintFormatter" id="app.jira.jira_sprint_formatter">
+            <argument id="app.jira.jira_api_handler" type="service"/>
+        </service>
+
+        <service class="AppBundle\Jira\JiraApiHandler" id="app.jira.jira_api_handler">
+            <argument id="app.parser.jira_api_data_parser" type="service"/>
+            <argument type="string">%jira_host%</argument>
+            <argument type="string">%jira_user%</argument>
+            <argument type="string">%jira_password%</argument>
+        </service>
+
+        <service class="AppBundle\Jira\JiraDataManager" id="app.jira.jira_data_manager">
+            <argument id="app.jira.jira_sprint_formatter" type="service"/>
+        </service>
+
+        <service class="AppBundle\Helper\EmployeeHelper" id="app.helper.employee_helper"/>
+
+        <service class="AppBundle\Helper\IssueHelper" id="app.helper.issue_helper"/>
+
+        <service class="AppBundle\Helper\ProjectHelper" id="app.helper.project_helper"/>
+
+        <service class="AppBundle\Helper\WorklogHelper" id="app.helper.worklog_helper"/>
+
+        <service class="AppBundle\Parser\JiraApiDataParser" id="app.parser.jira_api_data_parser"/>
+
+    </services>
+</container>

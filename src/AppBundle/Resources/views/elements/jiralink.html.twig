@@ -1,0 +1,8 @@
+<div class="d-flex justify-content-between align-items-center">
+    <a href="{{ path('app_issue', { 'issueKey': issueKey, 'sprintId': sprint['id'] }) }}" title="Logs inzien">
+        {{ issueKey }}
+    </a>
+    <a href="https://webstores.atlassian.net/browse/{{ issueKey }}" target="_blank" title="Jira openen">
+        <span style="font-size: smaller;" class="oi oi-external-link"></span>
+    </a>
+</div>

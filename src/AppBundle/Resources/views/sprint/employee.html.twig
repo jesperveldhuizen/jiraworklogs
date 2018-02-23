@@ -1,0 +1,32 @@
+{% extends '@App/master.html.twig' %}
+
+{% block body %}
+    {% include '@App/elements/breadcrumb.html.twig' with {
+        'sprint': sprint
+    } %}
+    <div class="p-3 mb-3 bg-success text-white">
+        <div class="container">
+            <h4 class="mb-0">{{ employee['name'] }}</h4>
+        </div>
+    </div>
+    <div class="container">
+        {% set workLogs = app_splitLogsPerDay(logs) %}
+        {% for date,logs in workLogs %}
+            {% set timeSpent = app_getTimeSpentForLogs(logs) %}
+            {% set timeSpentHours = app_calculateHoursbySeconds(timeSpent) %}
+            {% set isDateInSprint = app_isDateInSprint(date, sprint) %}
+            <div class="card p-3 mb-3">
+                <h5 class="{{ isDateInSprint ? 'mb-3' : 'mb-1' }}">{{ app_getDateDayByString(date) }} ({{ timeSpentHours }} uur)</h5>
+                {% if isDateInSprint == false %}
+                    <p class="mb-3 text-danger" style="font-size: smaller;"><strong>Let op:</strong> deze dag valt buiten de sprint.</p>
+                {% endif %}
+                {% include '@App/elements/tables/logs.html.twig' with {
+                    'logs': logs,
+                    'showUser': false,
+                    'showDate': false,
+                    'showFooter': false
+                } %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

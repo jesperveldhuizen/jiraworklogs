@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="app_index" path="/">
+        <default key="_controller">AppBundle:Default:index</default>
+    </route>
+
+    <route id="app_clear" path="/clear">
+        <default key="_controller">AppBundle:Default:clear</default>
+    </route>
+
+    <route id="app_sprint" path="/sprint/{sprintId}">
+        <default key="_controller">AppBundle:Sprint:index</default>
+    </route>
+
+    <route id="app_issue" path="/sprint/{sprintId}/issue/{issueKey}">
+        <default key="_controller">AppBundle:Sprint:issue</default>
+    </route>
+
+    <route id="app_issues" path="/sprint/{sprintId}/issues">
+        <default key="_controller">AppBundle:Sprint:issues</default>
+    </route>
+
+    <route id="app_employee" path="/sprint/{sprintId}/employee/{employeeId}">
+        <default key="_controller">AppBundle:Sprint:employee</default>
+    </route>
+
+    <route id="app_project" path="/sprint/{sprintId}/project/{projectKey}">
+        <default key="_controller">AppBundle:Sprint:project</default>
+    </route>
+
+    <route id="app_day" path="/sprint/{sprintId}/day/{day}">
+        <default key="_controller">AppBundle:Sprint:day</default>
+    </route>
+
+</routes>
